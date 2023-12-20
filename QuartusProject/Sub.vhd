@@ -1,0 +1,36 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity Sub is
+  port(
+    a: in std_logic_vector(3 downto 0);
+    b: in std_logic_vector(3 downto 0);
+    s: out std_logic_vector(3 downto 0)
+  );
+end entity Sub;
+
+architecture rtl of Sub is
+
+  signal x: std_logic_vector(3 downto 0);
+  signal oi: std_logic_vector(2 downto 0);
+  signal co: std_logic;
+
+  component FullAdder
+    port( 
+      a, b, i: in std_logic;
+      s, o: out std_logic
+    );
+  end component;
+
+begin
+
+  x(0) <= not b(0);
+  x(1) <= not b(1);
+  x(2) <= not b(2);
+  x(3) <= not b(3);
+
+  adder0: FullAdder port map(a=>a(0), b=>x(0), i=>'1'  , s=>s(0), o=>oi(0));
+  adder1: FullAdder port map(a=>a(1), b=>x(1), i=>oi(0), s=>s(1), o=>oi(1));
+  adder2: FullAdder port map(a=>a(2), b=>x(2), i=>oi(1), s=>s(2), o=>oi(2));
+  adder3: FullAdder port map(a=>a(3), b=>x(3), i=>oi(2), s=>s(3), o=>co);
+end rtl;
